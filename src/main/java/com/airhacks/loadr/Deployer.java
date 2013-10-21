@@ -1,11 +1,16 @@
 package com.airhacks.loadr;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import javax.json.JsonObject;
+import javax.json.JsonValue;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.MultiPart;
@@ -31,6 +36,19 @@ public class Deployer {
         JsonObject answer = response.readEntity(JsonObject.class);
         System.out.println("Response: " + answer);
         return (response.getStatus() == 200);
+    }
+
+    public Set<Application> applications() {
+        Set<Application> retVal = new HashSet<>();
+        JsonObject answer = this.applicationTarget.request().accept(MediaType.APPLICATION_JSON).get(JsonObject.class);
+        JsonObject extraProperties = answer.getJsonObject("extraProperties");
+        JsonObject childResources = extraProperties.getJsonObject("childResources");
+        Set<Map.Entry<String, JsonValue>> entrySet = childResources.entrySet();
+        for (Map.Entry<String, JsonValue> application : entrySet) {
+            retVal.add(new Application(application.getKey(), application.getValue().toString()));
+        }
+        return retVal;
+
     }
 
 }

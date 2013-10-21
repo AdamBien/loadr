@@ -1,5 +1,6 @@
 package com.airhacks.loadr;
 
+import java.util.Set;
 import static junit.framework.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +26,20 @@ public class DeployerIT {
         assertTrue(success);
         success = this.cut.deploy(ARCHIVE);
         assertTrue(success);
+    }
+
+    @Test
+    public void applications() {
+        Set<Application> applications = this.cut.applications();
+        org.junit.Assert.assertNotNull(applications);
+        boolean found = false;
+        for (Application application : applications) {
+            System.out.println(application);
+            if (application.getName().equalsIgnoreCase("coffeebeans")) {
+                found = true;
+            }
+        }
+        assertTrue(found);
     }
 
 }
