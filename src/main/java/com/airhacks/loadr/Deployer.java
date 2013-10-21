@@ -32,15 +32,26 @@ public class Deployer {
         MultiPart form = new FormDataMultiPart().
                 field("force", "true").bodyPart(archive);
         Response response = applicationTarget.request("application/json").
-                header("X-Requested-By", "fishloader").post(Entity.entity(form, form.getMediaType()));
+                header("X-Requested-By", "loadr").
+                post(Entity.entity(form, form.getMediaType()));
         JsonObject answer = response.readEntity(JsonObject.class);
         System.out.println("Response: " + answer);
         return (response.getStatus() == 200);
     }
 
     public boolean undeploy(String applicationName) {
-        Response response = this.applicationTarget.path(applicationName).request(MediaType.APPLICATION_JSON).delete();
+        Response response = this.applicationTarget.path(applicationName).
+                request(MediaType.APPLICATION_JSON).
+                header("X-Requested-By", "fishloader").
+                delete();
         return response.getStatus() == 200;
+    }
+
+    public void undeployAll() {
+        Set<Application> applications = applications();
+        for (Application application : applications) {
+            undeploy(application.getName());
+        }
     }
 
     public Set<Application> applications() {

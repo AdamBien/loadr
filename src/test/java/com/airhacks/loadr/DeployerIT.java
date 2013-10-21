@@ -12,8 +12,9 @@ import org.junit.Test;
  */
 public class DeployerIT {
 
-    private String SERVER_LOCATION = "http://localhost:4848";
     private static final String ARCHIVE = "/Users/abien/work/workspaces/fishloader/FishLoader/test-deployment/coffeebeans.war";
+    private static final String EXISTING_APP_NAME = "coffeebeans";
+    private static final String SERVER_LOCATION = "http://localhost:4848";
     Deployer cut;
 
     @Before
@@ -45,6 +46,14 @@ public class DeployerIT {
     }
 
     @Test
+    public void applicationsWithEmptyServer() {
+        this.cut.undeployAll();
+        Set<Application> applications = this.cut.applications();
+        System.out.println("--- " + applications);
+        assertTrue(applications.isEmpty());
+    }
+
+    @Test
     public void undeployNotExisting() {
         boolean success = this.cut.undeploy("doesNotExistApp");
         assertFalse(success);
@@ -53,8 +62,8 @@ public class DeployerIT {
     @Test
     public void undeployExisting() {
         deploy();
-        this.cut.undeploy(EXISTING_APP_NAME);
+        boolean success = this.cut.undeploy(EXISTING_APP_NAME);
+        assertTrue(success);
     }
-    public static final String EXISTING_APP_NAME = "coffeebeans";
 
 }
