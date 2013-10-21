@@ -38,6 +38,11 @@ public class Deployer {
         return (response.getStatus() == 200);
     }
 
+    public boolean undeploy(String applicationName) {
+        Response response = this.applicationTarget.path(applicationName).request(MediaType.APPLICATION_JSON).delete();
+        return response.getStatus() == 200;
+    }
+
     public Set<Application> applications() {
         Set<Application> retVal = new HashSet<>();
         JsonObject answer = this.applicationTarget.request().accept(MediaType.APPLICATION_JSON).get(JsonObject.class);

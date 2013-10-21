@@ -2,6 +2,7 @@ package com.airhacks.loadr;
 
 import java.util.Set;
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,16 +31,30 @@ public class DeployerIT {
 
     @Test
     public void applications() {
+        deploy();
         Set<Application> applications = this.cut.applications();
         org.junit.Assert.assertNotNull(applications);
         boolean found = false;
         for (Application application : applications) {
             System.out.println(application);
-            if (application.getName().equalsIgnoreCase("coffeebeans")) {
+            if (application.getName().equalsIgnoreCase(EXISTING_APP_NAME)) {
                 found = true;
             }
         }
         assertTrue(found);
     }
+
+    @Test
+    public void undeployNotExisting() {
+        boolean success = this.cut.undeploy("doesNotExistApp");
+        assertFalse(success);
+    }
+
+    @Test
+    public void undeployExisting() {
+        deploy();
+        this.cut.undeploy(EXISTING_APP_NAME);
+    }
+    public static final String EXISTING_APP_NAME = "coffeebeans";
 
 }
