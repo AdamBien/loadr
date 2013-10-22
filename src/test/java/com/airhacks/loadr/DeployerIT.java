@@ -48,7 +48,7 @@ public class DeployerIT {
         boolean found = false;
         for (Application application : applications) {
             System.out.println(application);
-            if (application.getName().equalsIgnoreCase(EXISTING_APP_NAME)) {
+            if (EXISTING_APP_NAME.equals(application.getName())) {
                 found = true;
             }
         }
