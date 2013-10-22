@@ -12,7 +12,7 @@ import org.junit.Test;
  */
 public class DeployerIT {
 
-    private static final String ARCHIVE = "/Users/abien/work/workspaces/fishloader/FishLoader/test-deployment/coffeebeans.war";
+    private static final String ARCHIVE = "./test-deployment/coffeebeans.war";
     private static final String EXISTING_APP_NAME = "coffeebeans";
     private static final String SERVER_LOCATION = "http://localhost:4848";
     Deployer cut;
