@@ -1,7 +1,7 @@
 loadr
 =====
 
-REST deployment client for GlassFish
+##GlassFish Embeddable Deployment Utility
 
 The core functionality of loadr is implemented within the `com.airhacks.loadr.Deployer`class. 
 Deployer conveniently wraps the GlassFish v3 and v4 management API:
