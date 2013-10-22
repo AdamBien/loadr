@@ -34,8 +34,6 @@ public class Deployer {
         Response response = applicationTarget.request("application/json").
                 header("X-Requested-By", "loadr").
                 post(Entity.entity(form, form.getMediaType()));
-        JsonObject answer = response.readEntity(JsonObject.class);
-        System.out.println("Response: " + answer);
         return (response.getStatus() == 200);
     }
 
@@ -61,12 +59,16 @@ public class Deployer {
 
     public Set<Application> applications() {
         Set<Application> retVal = new HashSet<>();
-        JsonObject answer = this.applicationTarget.request().accept(MediaType.APPLICATION_JSON).get(JsonObject.class);
-        JsonObject extraProperties = answer.getJsonObject("extraProperties");
-        JsonObject childResources = extraProperties.getJsonObject("childResources");
-        Set<Map.Entry<String, JsonValue>> entrySet = childResources.entrySet();
+        JsonObject answer = this.applicationTarget.
+                request().
+                accept(MediaType.APPLICATION_JSON).
+                get(JsonObject.class);
+        JsonObject props = answer.getJsonObject("extraProperties");
+        JsonObject kids = props.getJsonObject("childResources");
+        Set<Map.Entry<String, JsonValue>> entrySet = kids.entrySet();
         for (Map.Entry<String, JsonValue> application : entrySet) {
-            retVal.add(new Application(application.getKey(), application.getValue().toString()));
+            retVal.add(new Application(application.getKey(),
+                    application.getValue().toString()));
         }
         return retVal;
 

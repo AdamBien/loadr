@@ -59,7 +59,6 @@ public class DeployerIT {
     public void applicationsWithEmptyServer() {
         this.cut.undeployAll();
         Set<Application> applications = this.cut.applications();
-        System.out.println("--- " + applications);
         assertTrue(applications.isEmpty());
     }
 
