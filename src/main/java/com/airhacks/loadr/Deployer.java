@@ -39,6 +39,11 @@ public class Deployer {
         return (response.getStatus() == 200);
     }
 
+    public boolean isDeployed(String appName) {
+        Response response = this.applicationTarget.path(appName).request().get();
+        return response.getStatus() == 200;
+    }
+
     public boolean undeploy(String applicationName) {
         Response response = this.applicationTarget.path(applicationName).
                 request(MediaType.APPLICATION_JSON).

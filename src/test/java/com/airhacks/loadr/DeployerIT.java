@@ -31,6 +31,16 @@ public class DeployerIT {
     }
 
     @Test
+    public void isDeployed() {
+        deploy();
+        boolean deployed = this.cut.isDeployed(EXISTING_APP_NAME);
+        assertTrue(deployed);
+        this.cut.undeploy(EXISTING_APP_NAME);
+        deployed = this.cut.isDeployed(EXISTING_APP_NAME);
+        assertFalse(deployed);
+    }
+
+    @Test
     public void applications() {
         deploy();
         Set<Application> applications = this.cut.applications();
