@@ -19,12 +19,13 @@ import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 
 public class Deployer {
 
+    public static final String MANAGEMENT_URI = "/management/domain/applications/application";
     private final Client client;
     private final WebTarget applicationTarget;
 
     public Deployer(String serverLocation) {
         this.client = ClientBuilder.newClient().register(MultiPartFeature.class);
-        this.applicationTarget = client.target(serverLocation + "/management/domain/applications/application");
+        this.applicationTarget = client.target(serverLocation + MANAGEMENT_URI);
     }
 
     public boolean deploy(String archiveFile) {
