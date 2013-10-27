@@ -46,7 +46,7 @@ public class Deployer {
     public boolean undeploy(String applicationName) {
         Response response = this.applicationTarget.path(applicationName).
                 request(MediaType.APPLICATION_JSON).
-                header("X-Requested-By", "fishloader").
+                header("X-Requested-By", "loadr").
                 delete();
         return response.getStatus() == 200;
     }
