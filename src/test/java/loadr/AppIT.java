@@ -1,4 +1,4 @@
-package com.airhacks.loadr;
+package loadr;
 
 import org.junit.Test;
 
@@ -6,18 +6,18 @@ import org.junit.Test;
  *
  * @author airhacks.com
  */
-public class DeployIT {
+public class AppIT {
 
     @Test
     public void mainWithTwoArguments() {
         String args[] = {"http://localhost:4848", "./test-deployment/coffeebeans.war"};
-        Deploy.main(args);
+        App.main(args);
     }
 
     @Test
     public void mainWithSingleArgument() {
         String args[] = {"./test-deployment/coffeebeans.war"};
-        Deploy.main(args);
+        App.main(args);
     }
 
 }

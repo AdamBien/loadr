@@ -49,8 +49,7 @@ public class App {
         Set<Application> applications = deployer.applications();
         list(applications);
         String appName = extractApplicationName(archive);
-        System.out.println("To undeploy use: com.airhacks.loadr.Undeploy " + server + " " + appName);
-
+        System.out.println("To undeploy use: java -jar loadr.jar -u " + server + " " + appName);
     }
 
     public static String extractApplicationName(String archive) {
@@ -66,6 +65,9 @@ public class App {
 
     static void usage() {
         System.out.println("loadr.App [-d|-u|-l] http://[ADMIN_SERVER_HOST] PATH_TO_WAR");
+        System.out.println("-l: list deployed applications");
+        System.out.println("-d: deploy an application");
+        System.out.println("-u: undeploy an application");
     }
 
     static void undeploy(String server, String archive) {
@@ -84,6 +86,10 @@ public class App {
     static void list(Set<Application> applications) {
 
         System.out.println("------------------");
+        if (applications.isEmpty()) {
+            System.out.println("no deployed applications");
+            return;
+        }
         for (Application application : applications) {
             System.out.println(application.getName() + " -> " + application.getUri());
         }
