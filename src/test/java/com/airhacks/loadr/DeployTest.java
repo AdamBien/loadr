@@ -13,7 +13,7 @@ public class DeployTest {
     @Test
     public void extractApplicationName() {
         String expected = "duke";
-        String actual = Deploy.extractApplicationName(expected + ".war");
+        String actual = Deploy.extractApplicationName(" ./test-deployment/" + expected + ".war");
         assertThat(actual, is(expected));
     }
 
