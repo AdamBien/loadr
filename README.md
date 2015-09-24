@@ -6,45 +6,45 @@ loadr
 
 ### List applications
 
-´´´java
+```
 java -jar loadr.jar -l http://localhost:4848
-´´´
+```
 
 Output:
 
-´´´
+```
 ------------------
 no deployed applications
-´´´
+```
 
 
 ### Deployment
 
-´´´java
+```
 java -jar loadr.jar -d http://localhost:4848 ../test-deployment/coffeebeans.war
-´´´
+```
 
 Output:
 
-´´´java
+```
 ------------------
 coffeebeans -> "http://localhost:4848/management/domain/applications/application/coffeebeans"
 ------------------
 To undeploy use: java -jar loadr.jar -u http://localhost:4848 coffeebeans
-´´´
+```
 
 ### Undeployment
 
-´´´java
+```
 java -jar loadr.jar -u http://localhost:4848 coffeebeans
-´´´
+```
 
 Output:
 
-´´´
+```
 ------------------
 no deployed applications
-´´´
+```
 
 
 
@@ -53,7 +53,7 @@ no deployed applications
 The core functionality of loadr is implemented within the `com.airhacks.loadr.Deployer`class. 
 Deployer conveniently wraps the GlassFish v3 and v4 management API:
 
-
+```java
 public class WorkflowIT {
 
     private static final String ARCHIVE = "./test-deployment/coffeebeans.war";
