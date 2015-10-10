@@ -13,7 +13,7 @@ public class App {
     public static void main(String[] args) {
         String server = "http://localhost:4848";
         String archive = null;
-        if (args == null || args.length < 1) {
+        if (args == null || args.length <= 1) {
             usage();
             return;
         }
