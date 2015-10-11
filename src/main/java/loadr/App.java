@@ -49,6 +49,10 @@ public class App {
 
     static Map<String, String> arrayToMap(String args[]) {
         Map<String, String> arguments = new HashMap<>();
+        if (args.length == 1) {
+            arguments.put(args[0], null);
+            return arguments;
+        }
         for (int i = 0; i < args.length - 1; i++) {
             if (i % 2 == 0) {
                 arguments.put(args[i], args[i + 1]);

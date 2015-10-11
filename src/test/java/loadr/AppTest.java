@@ -6,7 +6,9 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
@@ -49,6 +51,17 @@ public class AppTest {
         assertThat(argumentMap.get("-d"), is("war.war"));
         assertThat(argumentMap.get("-h"), is("http://airhacks.com"));
         assertThat(argumentMap.get("-l"), is("list"));
+    }
+
+    @Test
+    public void extractListArgument() {
+        String LIST_ARGUMENT = "-l";
+        String[] args = {LIST_ARGUMENT};
+
+        Map<String, String> argumentMap = App.arrayToMap(args);
+        assertThat(argumentMap.size(), is(1));
+        assertTrue(argumentMap.containsKey("-l"));
+        assertNull(argumentMap.get("-l"));
     }
 
     @Test
