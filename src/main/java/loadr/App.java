@@ -3,9 +3,12 @@ package loadr;
 import com.airhacks.loadr.Application;
 import com.airhacks.loadr.Deployer;
 import com.airhacks.loadr.Hooker;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  *
@@ -49,12 +52,15 @@ public class App {
 
     static Map<String, String> arrayToMap(String args[]) {
         Map<String, String> arguments = new HashMap<>();
-        if (args.length == 1) {
-            arguments.put(args[0], null);
-            return arguments;
+
+        Stream<String> argStream = Arrays.stream(args);
+        Optional<String> first = argStream.filter(a -> a.equals(Arguments.LIST.argumentName())).findFirst();
+        if (first.isPresent()) {
+            arguments.put(first.get(), "");
         }
+
         for (int i = 0; i < args.length - 1; i++) {
-            if (i % 2 == 0) {
+            if (args[i].startsWith("-")) {
                 arguments.put(args[i], args[i + 1]);
             }
         }

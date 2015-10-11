@@ -6,7 +6,6 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -61,7 +60,7 @@ public class AppTest {
         Map<String, String> argumentMap = App.arrayToMap(args);
         assertThat(argumentMap.size(), is(1));
         assertTrue(argumentMap.containsKey("-l"));
-        assertNull(argumentMap.get("-l"));
+        assertTrue(argumentMap.get("-l").isEmpty());
     }
 
     @Test
