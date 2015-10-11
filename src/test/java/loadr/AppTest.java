@@ -1,6 +1,7 @@
 package loadr;
 
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
@@ -48,6 +49,29 @@ public class AppTest {
         assertThat(argumentMap.get("-d"), is("war.war"));
         assertThat(argumentMap.get("-h"), is("http://airhacks.com"));
         assertThat(argumentMap.get("-l"), is("list"));
-        assertThat(argumentMap.size(), is(args.length));
     }
+
+    @Test
+    public void mapToAction() {
+        Map<String, String> arguments = new HashMap<>();
+        arguments.put("-d", "archive");
+        App.Action action = App.argumentsToAction(arguments);
+        assertThat(action, is(App.Action.DEPLOY));
+
+        arguments.clear();
+        arguments.put("-u", "archive");
+        action = App.argumentsToAction(arguments);
+        assertThat(action, is(App.Action.UNDEPLOY));
+
+        arguments.clear();
+        arguments.put("-l", null);
+        action = App.argumentsToAction(arguments);
+        assertThat(action, is(App.Action.LIST));
+
+        arguments.clear();
+        arguments.put("-UNKNOWN-", null);
+        action = App.argumentsToAction(arguments);
+        assertThat(action, is(App.Action.USAGE));
+    }
+
 }

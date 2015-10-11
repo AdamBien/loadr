@@ -2,17 +2,25 @@ package loadr;
 
 import com.airhacks.loadr.Application;
 import com.airhacks.loadr.Deployer;
+import com.airhacks.loadr.Hooker;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  *
  * @author airhacks.com
  */
 public class App {
+
+    static final String DEPLOY_ARGUMENT = "-d";
+    static final String UNDEPLOY_ARGUMENT = "-u";
+    static final String LIST_ARGUMENT = "-l";
+    static final String HOOK_ARGUMENT = "-h";
+
+    enum Action {
+        DEPLOY, UNDEPLOY, LIST, USAGE;
+    }
 
     public static void main(String[] args) {
         String server = "http://localhost:4848";
@@ -21,18 +29,24 @@ public class App {
             usage();
             return;
         }
-
-        String action = null;
+        Map<String, String> arguments = arrayToMap(args);
+        Action action = argumentsToAction(arguments);
         switch (action) {
-            case "-l":
+            case LIST:
                 list(server);
                 break;
-            case "-d":
+            case DEPLOY:
                 deploy(server, archive);
                 break;
-            case "-u":
+            case UNDEPLOY:
                 undeploy(server, archive);
                 break;
+            case USAGE:
+                usage();
+        }
+        String uri = arguments.get(HOOK_ARGUMENT);
+        if (uri != null) {
+            performHook(uri);
         }
     }
 
@@ -46,11 +60,17 @@ public class App {
         return arguments;
     }
 
-    static void perform(BiFunction<String, String, Boolean> task, String server, String archive, Function<Void, Void> notification) {
-        Boolean result = task.apply(server, archive);
-        if (result) {
-            notification.apply(null);
+    static Action argumentsToAction(Map<String, String> arguments) {
+        if (arguments.containsKey(DEPLOY_ARGUMENT)) {
+            return Action.DEPLOY;
         }
+        if (arguments.containsKey(UNDEPLOY_ARGUMENT)) {
+            return Action.UNDEPLOY;
+        }
+        if (arguments.containsKey(LIST_ARGUMENT)) {
+            return Action.LIST;
+        }
+        return Action.USAGE;
     }
 
     static boolean deploy(String server, String archive) {
@@ -61,6 +81,14 @@ public class App {
         String appName = extractApplicationName(archive);
         System.out.println("To undeploy use: java -jar loadr.jar -u " + server + " " + appName);
         return success;
+    }
+
+    static void performHook(String uri) {
+        Hooker hooker = new Hooker(uri);
+        String result = hooker.invoke();
+        System.out.println("------------");
+        System.out.println(result);
+        System.out.println("------------");
     }
 
     public static String extractApplicationName(String archive) {
@@ -79,6 +107,7 @@ public class App {
         System.out.println("-l: list deployed applications");
         System.out.println("-d: deploy an application");
         System.out.println("-u: undeploy an application");
+        System.out.println("-h: perform a HTTP GET request to the URI");
     }
 
     static boolean undeploy(String server, String archive) {
