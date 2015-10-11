@@ -17,7 +17,7 @@ public class App {
 
     public static void main(String[] args) {
         String archive;
-        if (args == null || args.length <= 1) {
+        if (args == null || args.length < 1) {
             usage();
             return;
         }

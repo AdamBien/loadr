@@ -10,13 +10,13 @@ public class AppIT {
 
     @Test
     public void mainWithTwoArguments() {
-        String args[] = {"http://localhost:4848", "./test-deployment/coffeebeans.war"};
+        String args[] = {"-s", "http://localhost:4848", "-d", "./test-deployment/coffeebeans.war"};
         App.main(args);
     }
 
     @Test
-    public void mainWithSingleArgument() {
-        String args[] = {"./test-deployment/coffeebeans.war"};
+    public void deployToDefaultServer() {
+        String args[] = {"-d", "./test-deployment/coffeebeans.war"};
         App.main(args);
     }
 
