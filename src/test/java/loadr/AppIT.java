@@ -1,6 +1,11 @@
 package loadr;
 
+import java.io.PrintStream;
+import static org.hamcrest.CoreMatchers.startsWith;
 import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.verify;
 
 /**
  *
@@ -18,6 +23,16 @@ public class AppIT {
     public void deployToDefaultServer() {
         String args[] = {"-d", "./test-deployment/coffeebeans.war"};
         App.main(args);
+    }
+
+    @Test
+    public void invokeWithoutArguments() {
+        PrintStream stream = Mockito.mock(PrintStream.class);
+        System.setOut(stream);
+        String args[] = {""};
+        App.main(args);
+        verify(stream).println(Matchers.argThat(startsWith("loadr")));
+
     }
 
 }
