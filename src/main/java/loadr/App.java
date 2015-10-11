@@ -2,7 +2,11 @@ package loadr;
 
 import com.airhacks.loadr.Application;
 import com.airhacks.loadr.Deployer;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  *
@@ -17,19 +21,8 @@ public class App {
             usage();
             return;
         }
-        String action = args[0];
 
-        if (args.length == 3) {
-            server = args[1];
-            archive = args[2];
-        }
-        if (args.length == 2) {
-            archive = args[1];
-        }
-        if (args.length == 1) {
-            server = args[1];
-        }
-
+        String action = null;
         switch (action) {
             case "-l":
                 list(server);
@@ -43,13 +36,31 @@ public class App {
         }
     }
 
-    static void deploy(String server, String archive) {
+    static Map<String, String> arrayToMap(String args[]) {
+        Map<String, String> arguments = new HashMap<>();
+        for (int i = 0; i < args.length - 1; i++) {
+            if (i % 2 == 0) {
+                arguments.put(args[i], args[i + 1]);
+            }
+        }
+        return arguments;
+    }
+
+    static void perform(BiFunction<String, String, Boolean> task, String server, String archive, Function<Void, Void> notification) {
+        Boolean result = task.apply(server, archive);
+        if (result) {
+            notification.apply(null);
+        }
+    }
+
+    static boolean deploy(String server, String archive) {
         Deployer deployer = new Deployer(server);
-        deployer.deploy(archive);
+        boolean success = deployer.deploy(archive);
         Set<Application> applications = deployer.applications();
         list(applications);
         String appName = extractApplicationName(archive);
         System.out.println("To undeploy use: java -jar loadr.jar -u " + server + " " + appName);
+        return success;
     }
 
     public static String extractApplicationName(String archive) {
@@ -70,11 +81,11 @@ public class App {
         System.out.println("-u: undeploy an application");
     }
 
-    static void undeploy(String server, String archive) {
+    static boolean undeploy(String server, String archive) {
         Deployer deployer = new Deployer(server);
-        deployer.undeploy(extractApplicationName(archive));
+        boolean success = deployer.undeploy(extractApplicationName(archive));
         list(deployer.applications());
-
+        return success;
     }
 
     static void list(String server) {

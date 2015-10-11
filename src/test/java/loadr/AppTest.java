@@ -1,8 +1,10 @@
 package loadr;
 
 import java.io.PrintStream;
+import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -37,4 +39,15 @@ public class AppTest {
         verify(stream).println(Matchers.argThat(startsWith("loadr")));
     }
 
+    @Test
+    public void arrayToMapEvenArgumentsNumber() {
+        String[] args = {"-d", "war.war", "-h", "http://airhacks.com", "-l", "list"};
+        Map<String, String> argumentMap = App.arrayToMap(args);
+        assertNotNull(argumentMap);
+        System.out.println("argumentMap = " + argumentMap);
+        assertThat(argumentMap.get("-d"), is("war.war"));
+        assertThat(argumentMap.get("-h"), is("http://airhacks.com"));
+        assertThat(argumentMap.get("-l"), is("list"));
+        assertThat(argumentMap.size(), is(args.length));
+    }
 }
