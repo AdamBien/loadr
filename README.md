@@ -12,6 +12,12 @@ loadr
 java -jar loadr.jar -l
 ```
 
+or
+
+```
+java -jar -s http://[admin-server]:[port] loadr.jar -l
+```
+
 Output:
 
 ```
