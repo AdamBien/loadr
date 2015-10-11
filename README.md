@@ -9,7 +9,7 @@ loadr
 ### List applications
 
 ```
-java -jar loadr.jar -l http://localhost:4848
+java -jar loadr.jar -l
 ```
 
 Output:
@@ -23,7 +23,7 @@ no deployed applications
 ### Deployment
 
 ```
-java -jar loadr.jar -d http://localhost:4848 ../test-deployment/coffeebeans.war
+java -jar loadr.jar -d ../test-deployment/coffeebeans.war
 ```
 
 Output:
@@ -38,7 +38,7 @@ To undeploy use: java -jar loadr.jar -u http://localhost:4848 coffeebeans
 ### Undeployment
 
 ```
-java -jar loadr.jar -u http://localhost:4848 coffeebeans
+java -jar loadr.jar -u coffeebeans
 ```
 
 Output:
@@ -48,6 +48,17 @@ Output:
 no deployed applications
 ```
 
+### Deployment to a configurable server
+
+```
+java -jar loadr.jar -s http://localhost:4242 -d ../test-deployment/coffeebeans.war
+```
+
+### Deployment with callback
+
+```
+java -jar loadr.jar -d ../test-deployment/coffeebeans.war -h http://ci-host/?action=perform-system-tests
+```
 
 
 ##Payara (GlassFish) Embeddable Deployment Utility
