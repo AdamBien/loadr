@@ -13,34 +13,19 @@ import java.util.Set;
  */
 public class App {
 
-    enum Arguments {
-
-        DEPLOY("-d"),
-        UNDEPLOY("-u"),
-        LIST("-l"),
-        HOOK("-h"),
-        USAGE(null);
-
-        private String name;
-
-        Arguments(String name) {
-            this.name = name;
-        }
-
-        public String argumentName() {
-            return name;
-        }
-    }
+    static final String DEFAULT_SERVER_URI = "http://localhost:4848";
 
     public static void main(String[] args) {
-        String server = "http://localhost:4848";
+        String archive;
         if (args == null || args.length <= 1) {
             usage();
             return;
         }
-        String archive;
         Map<String, String> arguments = arrayToMap(args);
+        String server = extractServerURI(arguments);
+
         Arguments action = argumentsToAction(arguments);
+
         switch (action) {
             case LIST:
                 list(server);
@@ -115,7 +100,8 @@ public class App {
     }
 
     static void usage() {
-        System.out.println("loadr.App [-d|-u|-l] http://[ADMIN_SERVER_HOST] PATH_TO_WAR");
+        System.out.println("loadr.App -s [SERVER_NAME] [-d|-u|-l] PATH_TO_WAR [-h HTTP_GET_URI]");
+        System.out.println("-s: sever uri, default is localhost:4848");
         System.out.println("-l: list deployed applications");
         System.out.println("-d: deploy an application");
         System.out.println("-u: undeploy an application");
@@ -146,6 +132,10 @@ public class App {
             System.out.println(application.getName() + " -> " + application.getUri());
         }
         System.out.println("------------------");
+    }
+
+    static String extractServerURI(Map<String, String> arguments) {
+        return arguments.getOrDefault(Arguments.SERVER.argumentName(), DEFAULT_SERVER_URI);
     }
 
 }

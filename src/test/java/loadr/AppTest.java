@@ -42,7 +42,7 @@ public class AppTest {
 
     @Test
     public void arrayToMapEvenArgumentsNumber() {
-        String[] args = {"-d", "war.war", "-h", "http://airhacks.com", "-l", "list"};
+        String[] args = {"-d", "war.war", "-h", "http://airhacks.com", "-l", "list", "-s http://localhost:4949"};
         Map<String, String> argumentMap = App.arrayToMap(args);
         assertNotNull(argumentMap);
         System.out.println("argumentMap = " + argumentMap);
@@ -52,26 +52,41 @@ public class AppTest {
     }
 
     @Test
+    public void extractServerURI() {
+        final String expected = "http://localhost:4949";
+        Map<String, String> map = new HashMap<>();
+        map.put("-s", expected);
+
+        String serverURI = App.extractServerURI(map);
+        assertThat(serverURI, is(expected));
+
+        map.clear();
+
+        serverURI = App.extractServerURI(map);
+        assertThat(serverURI, is(App.DEFAULT_SERVER_URI));
+    }
+
+    @Test
     public void mapToAction() {
         Map<String, String> arguments = new HashMap<>();
         arguments.put("-d", "archive");
-        App.Arguments action = App.argumentsToAction(arguments);
-        assertThat(action, is(App.Arguments.DEPLOY));
+        Arguments action = App.argumentsToAction(arguments);
+        assertThat(action, is(Arguments.DEPLOY));
 
         arguments.clear();
         arguments.put("-u", "archive");
         action = App.argumentsToAction(arguments);
-        assertThat(action, is(App.Arguments.UNDEPLOY));
+        assertThat(action, is(Arguments.UNDEPLOY));
 
         arguments.clear();
         arguments.put("-l", null);
         action = App.argumentsToAction(arguments);
-        assertThat(action, is(App.Arguments.LIST));
+        assertThat(action, is(Arguments.LIST));
 
         arguments.clear();
         arguments.put("-UNKNOWN-", null);
         action = App.argumentsToAction(arguments);
-        assertThat(action, is(App.Arguments.USAGE));
+        assertThat(action, is(Arguments.USAGE));
     }
 
 }
