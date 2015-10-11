@@ -86,7 +86,7 @@ public class App {
         Set<Application> applications = deployer.applications();
         list(applications);
         String appName = extractApplicationName(archive);
-        System.out.println("To undeploy use: java -jar loadr.jar -u " + server + " " + appName);
+        System.out.println("To undeploy use: java -jar loadr.jar -s " + server + " -u " + appName);
         return success;
     }
 
