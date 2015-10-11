@@ -13,38 +13,50 @@ import java.util.Set;
  */
 public class App {
 
-    static final String DEPLOY_ARGUMENT = "-d";
-    static final String UNDEPLOY_ARGUMENT = "-u";
-    static final String LIST_ARGUMENT = "-l";
-    static final String HOOK_ARGUMENT = "-h";
+    enum Arguments {
 
-    enum Action {
-        DEPLOY, UNDEPLOY, LIST, USAGE;
+        DEPLOY("-d"),
+        UNDEPLOY("-u"),
+        LIST("-l"),
+        HOOK("-h"),
+        USAGE(null);
+
+        private String name;
+
+        Arguments(String name) {
+            this.name = name;
+        }
+
+        public String argumentName() {
+            return name;
+        }
     }
 
     public static void main(String[] args) {
         String server = "http://localhost:4848";
-        String archive = null;
         if (args == null || args.length <= 1) {
             usage();
             return;
         }
+        String archive;
         Map<String, String> arguments = arrayToMap(args);
-        Action action = argumentsToAction(arguments);
+        Arguments action = argumentsToAction(arguments);
         switch (action) {
             case LIST:
                 list(server);
                 break;
             case DEPLOY:
+                archive = arguments.get(Arguments.DEPLOY.argumentName());
                 deploy(server, archive);
                 break;
             case UNDEPLOY:
+                archive = arguments.get(Arguments.UNDEPLOY.argumentName());
                 undeploy(server, archive);
                 break;
             case USAGE:
                 usage();
         }
-        String uri = arguments.get(HOOK_ARGUMENT);
+        String uri = arguments.get(Arguments.HOOK.argumentName());
         if (uri != null) {
             performHook(uri);
         }
@@ -60,17 +72,17 @@ public class App {
         return arguments;
     }
 
-    static Action argumentsToAction(Map<String, String> arguments) {
-        if (arguments.containsKey(DEPLOY_ARGUMENT)) {
-            return Action.DEPLOY;
+    static Arguments argumentsToAction(Map<String, String> arguments) {
+        if (arguments.containsKey(Arguments.DEPLOY.argumentName())) {
+            return Arguments.DEPLOY;
         }
-        if (arguments.containsKey(UNDEPLOY_ARGUMENT)) {
-            return Action.UNDEPLOY;
+        if (arguments.containsKey(Arguments.UNDEPLOY.argumentName())) {
+            return Arguments.UNDEPLOY;
         }
-        if (arguments.containsKey(LIST_ARGUMENT)) {
-            return Action.LIST;
+        if (arguments.containsKey(Arguments.LIST.argumentName())) {
+            return Arguments.LIST;
         }
-        return Action.USAGE;
+        return Arguments.USAGE;
     }
 
     static boolean deploy(String server, String archive) {

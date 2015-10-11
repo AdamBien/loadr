@@ -55,23 +55,23 @@ public class AppTest {
     public void mapToAction() {
         Map<String, String> arguments = new HashMap<>();
         arguments.put("-d", "archive");
-        App.Action action = App.argumentsToAction(arguments);
-        assertThat(action, is(App.Action.DEPLOY));
+        App.Arguments action = App.argumentsToAction(arguments);
+        assertThat(action, is(App.Arguments.DEPLOY));
 
         arguments.clear();
         arguments.put("-u", "archive");
         action = App.argumentsToAction(arguments);
-        assertThat(action, is(App.Action.UNDEPLOY));
+        assertThat(action, is(App.Arguments.UNDEPLOY));
 
         arguments.clear();
         arguments.put("-l", null);
         action = App.argumentsToAction(arguments);
-        assertThat(action, is(App.Action.LIST));
+        assertThat(action, is(App.Arguments.LIST));
 
         arguments.clear();
         arguments.put("-UNKNOWN-", null);
         action = App.argumentsToAction(arguments);
-        assertThat(action, is(App.Action.USAGE));
+        assertThat(action, is(App.Arguments.USAGE));
     }
 
 }
