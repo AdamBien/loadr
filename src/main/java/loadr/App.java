@@ -44,9 +44,14 @@ public class App {
             case USAGE:
                 usage();
         }
-        String uri = arguments.get(Arguments.HOOK.argumentName());
+        String uri = arguments.get(Arguments.POST.argumentName());
         if (uri != null) {
-            performHook(uri);
+            performPostHook(uri);
+        }
+
+        uri = arguments.get(Arguments.GET.argumentName());
+        if (uri != null) {
+            performGetHook(uri);
         }
     }
 
@@ -90,9 +95,17 @@ public class App {
         return success;
     }
 
-    static void performHook(String uri) {
+    static void performPostHook(String uri) {
         Hooker hooker = new Hooker(uri);
-        String result = hooker.invoke();
+        String result = hooker.invokePOST();
+        System.out.println("------------");
+        System.out.println(result);
+        System.out.println("------------");
+    }
+
+    static void performGetHook(String uri) {
+        Hooker hooker = new Hooker(uri);
+        String result = hooker.invokeGET();
         System.out.println("------------");
         System.out.println(result);
         System.out.println("------------");
