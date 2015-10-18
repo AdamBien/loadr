@@ -3,6 +3,10 @@ loadr
 
 [![Loadr In Action](https://i.ytimg.com/vi/A3-13avaG0M/mqdefault.jpg)](https://www.youtube.com/embed/A3-13avaG0M?rel=0)
 
+## Using WebHooks For Command Chaining
+
+[![Using WebHooks](https://i.ytimg.com/vi/leznAGoCeNo/mqdefault.jpg)](https://www.youtube.com/embed/leznAGoCeNo?rel=0)
+
 ## Command Line Interface
 
 
@@ -10,6 +14,12 @@ loadr
 
 ```
 java -jar loadr.jar -l
+```
+
+or
+
+```
+java -jar loadr.jar -s http://[admin-server]:[port] loadr.jar -l
 ```
 
 Output:
