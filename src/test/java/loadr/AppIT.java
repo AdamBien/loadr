@@ -38,7 +38,6 @@ public class AppIT {
         String args[] = {""};
         App.main(args);
         verify(stream).println(Matchers.argThat(startsWith("loadr")));
-
     }
 
 }

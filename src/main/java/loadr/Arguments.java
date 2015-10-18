@@ -9,7 +9,7 @@ enum Arguments {
     DEPLOY("-d"),
     UNDEPLOY("-u"),
     LIST("-l"),
-    GET("-get"),
+    HOOK("-h"),
     POST("-post"),
     SERVER("-s"),
     USAGE("-u");

@@ -64,6 +64,34 @@ public class AppTest {
     }
 
     @Test
+    public void extractPostArgument() {
+        final String post = "-post";
+        String POST_ARGUMENT = post;
+        String[] args = {POST_ARGUMENT};
+
+        Map<String, String> argumentMap = App.arrayToMap(args);
+        assertThat(argumentMap.size(), is(1));
+        assertTrue(argumentMap.containsKey(post));
+        assertTrue(argumentMap.get(post).isEmpty());
+    }
+
+    @Test
+    public void extractPostAndHookArgument() {
+        final String post = "-post";
+        final String hook = "-h";
+        final String uri = "http://localhost";
+        String[] args = {hook, uri, post};
+
+        Map<String, String> argumentMap = App.arrayToMap(args);
+        assertThat(argumentMap.size(), is(2));
+        assertTrue(argumentMap.containsKey(post));
+        assertTrue(argumentMap.containsKey(hook));
+        assertTrue(argumentMap.containsKey(uri));
+        assertTrue(argumentMap.get(post).isEmpty());
+        assertThat(argumentMap.get(hook), is(uri));
+    }
+
+    @Test
     public void extractServerURI() {
         final String expected = "http://localhost:4949";
         Map<String, String> map = new HashMap<>();

@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  *
@@ -44,24 +43,32 @@ public class App {
             case USAGE:
                 usage();
         }
-        String uri = arguments.get(Arguments.POST.argumentName());
+        String uri = arguments.get(Arguments.HOOK.argumentName());
+        boolean isPost = arguments.containsKey(Arguments.POST.argumentName());
         if (uri != null) {
-            performPostHook(uri);
-        }
-
-        uri = arguments.get(Arguments.GET.argumentName());
-        if (uri != null) {
-            performGetHook(uri);
+            if (isPost) {
+                performPostHook(uri);
+            } else {
+                performGetHook(uri);
+            }
         }
     }
 
     static Map<String, String> arrayToMap(String args[]) {
         Map<String, String> arguments = new HashMap<>();
 
-        Stream<String> argStream = Arrays.stream(args);
-        Optional<String> first = argStream.filter(a -> a.equals(Arguments.LIST.argumentName())).findFirst();
-        if (first.isPresent()) {
-            arguments.put(first.get(), "");
+        Optional<String> list = Arrays.stream(args).
+                filter(a -> a.equals(Arguments.LIST.argumentName())).
+                findFirst();
+        if (list.isPresent()) {
+            arguments.put(list.get(), "");
+        }
+        Optional<String> post = Arrays.stream(args).
+                filter(a -> a.equals(Arguments.POST.argumentName())).
+                findFirst();
+
+        if (post.isPresent()) {
+            arguments.put(post.get(), "");
         }
 
         for (int i = 0; i < args.length - 1; i++) {
