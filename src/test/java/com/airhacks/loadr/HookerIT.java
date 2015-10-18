@@ -10,7 +10,6 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.stream.Collectors;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import org.junit.After;
 import static org.junit.Assert.assertThat;
 import org.junit.Before;
@@ -59,15 +58,14 @@ public class HookerIT {
 
     @Test
     public void performGET() {
-        String result = this.cut.invokeGET();
-        assertThat(result, not(is("-")));
-        System.out.println("result = " + result);
+        String response = this.cut.invokeGET();
+        assertThat(response, is("+"));
     }
 
     @Test
     public void performPOST() {
         String response = this.cut.invokePOST();
-        assertThat(response, not(is("-")));
+        assertThat(response, is("+"));
         System.out.println("result = " + response);
     }
 
