@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -17,16 +18,16 @@ import java.util.stream.Collectors;
  */
 public class HttpService {
 
-    public static HttpServer startServer(String path, Consumer<String> consumer) throws IOException {
-        String payload = "+";
+    public static HttpServer startServer(String path, Supplier<String> request, Consumer<String> response) throws IOException {
         HttpServer httpServer = HttpServer.create(new InetSocketAddress(4221), 0);
         HttpContext context = httpServer.createContext(path);
         context.setHandler((he) -> {
-            he.sendResponseHeaders(200, payload.getBytes().length);
+            final byte[] bytes = request.get().getBytes();
+            he.sendResponseHeaders(200, bytes.length);
             final OutputStream output = he.getResponseBody();
             InputStream input = he.getRequestBody();
-            consumer.accept(read(input));
-            output.write(payload.getBytes());
+            response.accept(read(input));
+            output.write(bytes);
             output.flush();
             he.close();
         });

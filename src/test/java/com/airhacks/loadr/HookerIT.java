@@ -20,7 +20,7 @@ public class HookerIT {
 
     @Before
     public void initialize() throws IOException {
-        this.server = HttpService.startServer("/test", this::setResult);
+        this.server = HttpService.startServer("/test", () -> "+", this::setResult);
         this.cut = new Hooker("http://localhost:4221/test");
     }
 
