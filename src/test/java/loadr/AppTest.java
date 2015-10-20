@@ -86,9 +86,10 @@ public class AppTest {
         assertThat(argumentMap.size(), is(2));
         assertTrue(argumentMap.containsKey(post));
         assertTrue(argumentMap.containsKey(hook));
-        assertTrue(argumentMap.containsKey(uri));
+        assertTrue(argumentMap.containsValue(uri));
         assertTrue(argumentMap.get(post).isEmpty());
-        assertThat(argumentMap.get(hook), is(uri));
+        final String actualUri = argumentMap.get(hook);
+        assertThat(actualUri, is(uri));
     }
 
     @Test
