@@ -70,6 +70,12 @@ java -jar loadr.jar -s http://localhost:4242 -d ../test-deployment/coffeebeans.w
 java -jar loadr.jar -d ../test-deployment/coffeebeans.war -h http://ci-host/?action=perform-system-tests
 ```
 
+### Deployment with POST callback
+
+```
+java -jar loadr.jar -d ../test-deployment/coffeebeans.war -h http://ci-host/?action=perform-system-tests -post
+```
+
 
 ##Payara (GlassFish) Embeddable Deployment Utility
 
